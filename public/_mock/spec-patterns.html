@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SPECIALTIES — 5 scroll patterns</title>
+<style>
+  @font-face{font-family:'Changa';font-style:normal;font-weight:400 800;font-display:block;src:url('/fonts/6.woff2') format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC;}
+  @font-face{font-family:'Changa';font-style:normal;font-weight:400 800;font-display:block;src:url('/fonts/8.woff2') format('woff2');unicode-range:U+0000-00FF;}
+  @font-face{font-family:'IBM Plex Sans Arabic';font-style:normal;font-weight:400;font-display:block;src:url('/fonts/37.woff2') format('woff2');unicode-range:U+0600-06FF,U+0750-077F;}
+  @font-face{font-family:'IBM Plex Sans Arabic';font-style:normal;font-weight:400;font-display:block;src:url('/fonts/40.woff2') format('woff2');unicode-range:U+0000-00FF;}
+  @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:block;src:url('/fonts/26.woff2') format('woff2');unicode-range:U+0000-00FF;}
+
+  :root{
+    --bg:#080807;--panel:#0e0e0d;--line:rgba(255,255,255,.11);--line-s:rgba(255,255,255,.055);
+    --txt:#f3f1ea;--muted:#8a8880;--dim:#5d5b55;--yellow:#fbe23d;
+    --f-disp:'Changa',sans-serif;--f-body:'IBM Plex Sans Arabic',sans-serif;--f-mono:'IBM Plex Mono',monospace;
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg)}
+  body{font-family:var(--f-body);color:var(--txt);-webkit-font-smoothing:antialiased;padding:clamp(20px,3vw,44px)}
+  img{display:block}
+
+  .top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:clamp(20px,2.4vw,32px);flex-wrap:wrap}
+  .top .l{display:flex;flex-direction:column;gap:8px}
+  .kicker{font-family:var(--f-mono);font-size:9px;letter-spacing:.2em;color:var(--dim)}
+  .top h1{font-family:var(--f-disp);font-weight:700;font-size:clamp(22px,2.6vw,34px);line-height:1.15}
+  .top .r{font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;color:var(--dim);text-align:end;line-height:1.9}
+
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,1.6vw,22px)}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+  .p{background:var(--panel);border:1px solid var(--line-s);overflow:hidden;display:flex;flex-direction:column}
+  .p--wide{grid-column:1 / -1}
+
+  .p-head{display:flex;align-items:baseline;gap:12px;padding:14px 16px 10px;border-bottom:1px solid var(--line-s)}
+  .p-head .n{font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;color:var(--yellow)}
+  .p-head h2{font-family:var(--f-disp);font-weight:600;font-size:15px;line-height:1.2}
+  .p-head .en{margin-inline-start:auto;font-family:var(--f-mono);font-size:8px;letter-spacing:.16em;color:var(--dim)}
+
+  .stage{position:relative;height:clamp(330px,29vw,414px);perspective:1150px;overflow:hidden;background:radial-gradient(120% 90% at 50% 44%,#151514 0%,#0b0b0a 64%,#080807 100%)}
+  .stage::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 64px 8px rgba(8,8,7,.6)}
+
+  .world{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
+  .c{position:absolute;left:50%;top:50%;width:clamp(128px,12.4vw,170px);height:clamp(180px,17.4vw,238px);margin:calc(clamp(180px,17.4vw,238px) / -2) 0 0 calc(clamp(128px,12.4vw,170px) / -2);border-radius:2px;overflow:hidden;background:#141413;box-shadow:0 26px 50px -24px rgba(0,0,0,.95);border:1px solid rgba(255,255,255,.08)}
+  .c img{width:100%;height:100%;object-fit:cover}
+  .c i{position:absolute;inset-inline-start:7px;bottom:6px;font-family:var(--f-mono);font-style:normal;font-size:8px;letter-spacing:.1em;color:rgba(255,255,255,.72);text-shadow:0 1px 6px rgba(0,0,0,.8)}
+
+  .p-foot{padding:11px 16px 13px;border-top:1px solid var(--line-s);display:flex;align-items:baseline;gap:10px;justify-content:space-between;flex-wrap:wrap}
+  .p-foot p{font-size:10.5px;line-height:1.65;color:var(--muted);max-width:56ch}
+  .p-foot .tag{font-family:var(--f-mono);font-size:7.5px;letter-spacing:.12em;color:var(--dim);white-space:nowrap}
+
+  /* ---- 01 cylinder ---- */
+  .s1 .band{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-disp);font-weight:800;font-size:clamp(46px,5.2vw,74px);color:rgba(243,241,234,.09);letter-spacing:-.01em;transform:translateY(-6px)}
+  .s1 .world{transform:rotateX(-9deg) rotateY(-24deg)}
+  .s1 .c{transform:rotateY(calc(var(--i) * 90deg)) translateZ(clamp(130px,13vw,176px))}
+  .s1 .c:nth-child(1){filter:saturate(1.02)}
+  .s1 .c:nth-child(2),.s1 .c:nth-child(3),.s1 .c:nth-child(4){filter:blur(2.4px) brightness(.52)}
+  .s1 .halo{position:absolute;left:50%;top:50%;width:340px;height:240px;margin:-120px 0 0 -170px;background:url('/assets/proj-b-01.jpg') center/cover;filter:blur(48px) saturate(1.1);opacity:.3;border-radius:50%}
+
+  /* ---- 02 helix ---- */
+  .s2 .world{transform:rotateX(-13deg) rotateZ(-4deg)}
+  .s2 .c{transform:rotateY(calc(var(--i) * 64deg - 26deg)) translateZ(clamp(120px,12vw,158px)) translateY(calc((var(--i) - 1.5) * 50px))}
+  .s2 .c:nth-child(2){filter:brightness(1);border-color:rgba(251,226,61,.5)}
+  .s2 .c:nth-child(1),.s2 .c:nth-child(3){filter:blur(.9px) brightness(.7)}
+  .s2 .c:nth-child(4){filter:blur(2.2px) brightness(.45)}
+  .s2 .axis{position:absolute;left:50%;top:8%;bottom:8%;width:1px;background:linear-gradient(180deg,transparent,rgba(251,226,61,.22),transparent)}
+
+  /* ---- 03 corridor ---- */
+  .s3 .world{transform:translateZ(clamp(240px,24vw,330px))}
+  .s3 .c{transform:translateX(calc(var(--x) * 1px)) translateZ(calc(var(--i) * -215px)) rotateY(calc(var(--x) * .1deg))}
+  .s3 .c:nth-child(1){--x:96}
+  .s3 .c:nth-child(2){--x:-96;opacity:.85}
+  .s3 .c:nth-child(3){--x:96;opacity:.6}
+  .s3 .c:nth-child(4){--x:-96;opacity:.38}
+  .s3 .c:nth-child(1){filter:saturate(1.05)}
+  .s3 .c:nth-child(n+2){filter:blur(1px) brightness(.75)}
+  .s3 .rail{position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.09),transparent)}
+
+  /* ---- 04 orbit ---- */
+  .s4 .world{transform:rotateX(62deg) rotateZ(-18deg)}
+  .s4 .c{transform:rotateY(calc(var(--i) * 90deg)) translateZ(clamp(140px,14vw,182px)) rotateX(-62deg)}
+  .s4 .c:nth-child(1){border-color:rgba(251,226,61,.55);box-shadow:0 0 0 1px rgba(251,226,61,.25),0 22px 44px -22px rgba(0,0,0,.9)}
+  .s4 .c:nth-child(2),.s4 .c:nth-child(4){filter:brightness(.6) blur(.6px)}
+  .s4 .c:nth-child(3){filter:brightness(.4) blur(1.4px)}
+  .s4 .core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;display:flex;flex-direction:column;gap:2px}
+  .s4 .core b{font-family:var(--f-disp);font-weight:800;font-size:clamp(30px,3.4vw,46px);line-height:1;color:var(--txt)}
+  .s4 .core span{font-family:var(--f-mono);font-size:8px;letter-spacing:.22em;color:var(--dim)}
+  .s4 .ring{position:absolute;left:50%;top:50%;width:clamp(300px,30vw,392px);height:clamp(300px,30vw,392px);margin:calc(clamp(300px,30vw,392px) / -2) 0 0 calc(clamp(300px,30vw,392px) / -2);border:1px solid rgba(255,255,255,.07);border-radius:50%;transform:rotateX(62deg) rotateZ(-18deg)}
+
+  /* ---- 05 rolodex ---- */
+  .s5 .world{transform:rotateX(7deg)}
+  .s5 .c:nth-child(1){transform:translateY(-104px) rotateX(-74deg) scale(.9);opacity:.3;filter:blur(1px)}
+  .s5 .c:nth-child(2){transform:translateY(0) scale(1);border-color:rgba(251,226,61,.45)}
+  .s5 .c:nth-child(3){transform:translateY(13px) translateZ(-46px) scale(.94);filter:brightness(.6)}
+  .s5 .c:nth-child(4){transform:translateY(24px) translateZ(-92px) scale(.88);filter:brightness(.4) blur(1px)}
+  .s5 .drum{position:absolute;left:50%;top:50%;width:clamp(150px,15vw,196px);height:clamp(150px,15vw,196px);margin:calc(clamp(150px,15vw,196px) / -2) 0 0 calc(clamp(150px,15vw,196px) / -2);border:1px solid rgba(255,255,255,.05);border-radius:50%;transform:rotateX(74deg)}
+  .s5 .cursor{position:absolute;left:calc(50% + clamp(74px,7.4vw,96px));top:50%;width:7px;height:7px;margin-top:-3.5px;background:var(--yellow);border-radius:50%;box-shadow:0 0 14px rgba(251,226,61,.7)}
+
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="l">
+    <span class="kicker">BRAIN MEDIA — SPECIALTIES / 5 ROTATION PATTERNS</span>
+    <h1>خمسة أنماط لسكرول دوّار — اختر واحد</h1>
+  </div>
+  <div class="r">SKETCHES · NOT FINAL RENDER<br />4 PLATES · ONE AXIS · SCROLL = ROTATION</div>
+</div>
+
+<div class="grid">
+
+  <!-- 01 -->
+  <figure class="p">
+    <div class="p-head"><span class="n">01</span><h2>الأسطوانة</h2><span class="en">CYLINDER DRUM</span></div>
+    <div class="stage s1">
+      <div class="halo"></div>
+      <span class="band">التخصص</span>
+      <div class="world">
+        <div class="c"><img src="/assets/la-dune-06.jpg" alt="" /><i>01</i></div>
+        <div class="c"><img src="/assets/proj-b-01.jpg" alt="" /><i>02</i></div>
+        <div class="c"><img src="/assets/la-dune-03.jpg" alt="" /><i>03</i></div>
+        <div class="c"><img src="/assets/la-dune-04.jpg" alt="" /><i>04</i></div>
+      </div>
+    </div>
+    <div class="p-foot"><p>أربع ألواح على أسطوانة غير مرئية. السكرول بيلفّها، واللوح اللي بيوصل للمنتصف بيصفّى — الباقي بيضبب ويبعد. العنوان الكبير عايش جوّا الأسطوانة فاللوح بيمرق قدّام الحروف.</p><span class="tag">MOST FAITHFUL TO REF</span></div>
+  </figure>
+
+  <!-- 02 -->
+  <figure class="p">
+    <div class="p-head"><span class="n">02</span><h2>الحلزون</h2><span class="en">HELIX LADDER</span></div>
+    <div class="stage s2">
+      <span class="axis"></span>
+      <div class="world">
+        <div class="c"><img src="/assets/la-dune-06.jpg" alt="" /><i>01</i></div>
+        <div class="c"><img src="/assets/proj-b-01.jpg" alt="" /><i>02</i></div>
+        <div class="c"><img src="/assets/la-dune-03.jpg" alt="" /><i>03</i></div>
+        <div class="c"><img src="/assets/la-dune-04.jpg" alt="" /><i>04</i></div>
+      </div>
+    </div>
+    <div class="p-foot"><p>الألواح ملتفّة على محور عمودي. السكرول بينزّل الكاميرا درجة درجة — كل لوح بيدخل من فوق، بيلفّ ليواجهك، وبيطلع من تحت. النص بضل ثابت بالعمود.</p><span class="tag">VERTICAL TRAVEL</span></div>
+  </figure>
+
+  <!-- 03 -->
+  <figure class="p">
+    <div class="p-head"><span class="n">03</span><h2>الممر</h2><span class="en">DEPTH CORRIDOR</span></div>
+    <div class="stage s3">
+      <span class="rail"></span>
+      <div class="world">
+        <div class="c"><img src="/assets/la-dune-06.jpg" alt="" /><i>01</i></div>
+        <div class="c"><img src="/assets/proj-b-01.jpg" alt="" /><i>02</i></div>
+        <div class="c"><img src="/assets/la-dune-03.jpg" alt="" /><i>03</i></div>
+        <div class="c"><img src="/assets/la-dune-04.jpg" alt="" /><i>04</i></div>
+      </div>
+    </div>
+    <div class="p-foot"><p>ممر بعمق حقيقي: الألواح معلّقة على الجدارين بالتبادل. السكرول = تقدّم للأمام، فاللوح الأقرب هو النشِط والباقي بيغرق بالعتمة. إحساس المشي جوّا المصنع.</p><span class="tag">DOLLY FORWARD</span></div>
+  </figure>
+
+  <!-- 04 -->
+  <figure class="p">
+    <div class="p-head"><span class="n">04</span><h2>المدار</h2><span class="en">ORBIT</span></div>
+    <div class="stage s4">
+      <div class="ring"></div>
+      <div class="core"><b>التخصص</b><span>FOUR DISCIPLINES</span></div>
+      <div class="world">
+        <div class="c"><img src="/assets/la-dune-06.jpg" alt="" /><i>01</i></div>
+        <div class="c"><img src="/assets/proj-b-01.jpg" alt="" /><i>02</i></div>
+        <div class="c"><img src="/assets/la-dune-03.jpg" alt="" /><i>03</i></div>
+        <div class="c"><img src="/assets/la-dune-04.jpg" alt="" /><i>04</i></div>
+      </div>
+    </div>
+    <div class="p-foot"><p>العنوان هو مركز الجاذبية — ثابت، حقيقي، ما بيتحرك. الألواح بتدور حواليه، والسكرول بيلفّ المدار. اللوح النشِط بيتقدّم للمقدمة وبيصير أضوأ شي بالشاشة.</p><span class="tag">MOST BOLD</span></div>
+  </figure>
+
+  <!-- 05 -->
+  <figure class="p p--wide">
+    <div class="p-head"><span class="n">05</span><h2>الرولوديكس</h2><span class="en">ROLODEX / FILM DRUM</span></div>
+    <div class="stage s5">
+      <div class="drum"></div>
+      <span class="cursor"></span>
+      <div class="world">
+        <div class="c"><img src="/assets/la-dune-06.jpg" alt="" /><i>01</i></div>
+        <div class="c"><img src="/assets/proj-b-01.jpg" alt="" /><i>02</i></div>
+        <div class="c"><img src="/assets/la-dune-03.jpg" alt="" /><i>03</i></div>
+        <div class="c"><img src="/assets/la-dune-04.jpg" alt="" /><i>04</i></div>
+      </div>
+    </div>
+    <div class="p-foot"><p>بكرة ملفّات: اللوح القدامي بينقلب لفوق وبيطلع، والتالي بيطلع من تحت وبياخد مكانه — متل تقليب دفتر العيّنات. كل قلبة = تخصص جديد، والنص بيتغيّر معها بكشف سريع. أبطأ إيقاع، وأكثر إحساس «أرشيف».</p><span class="tag">FLIP / ARCHIVE FEEL</span></div>
+  </figure>
+
+</div>
+
+<script>
+  document.documentElement.dataset.ready = '1';
+</script>
+</body>
+</html>

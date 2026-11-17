@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "title": "Brain Media — Brand Factory",
+    "description": "Identity built from scratch, operations that run every day, and a website and storefront that actually sell — no empty promises."
+  },
+  "common": {
+    "skip": "Skip to content",
+    "menu": "Menu",
+    "close": "Close",
+    "language": "Language"
+  },
+  "nav": {
+    "ariaLabel": "Navigation",
+    "links": [
+      { "label": "Services", "href": "#services" },
+      { "label": "Case studies", "href": "#work" },
+      { "label": "Studio", "href": "#studio" },
+      { "label": "Insights", "href": "#insights" },
+      { "label": "Contact", "href": "#contact" }
+    ],
+    "cta": "Start a project"
+  },
+  "hero": {
+    "line1a": "We build",
+    "line1b": "brands",
+    "line2a": "and run them",
+    "line2b": "every day",
+    "aria": "We build brands and run them every day.",
+    "lead": "Identity built from scratch, operations that run every day, and a website and storefront that actually sell — no empty promises.",
+    "primaryCta": "Book a 15-min call",
+    "secondaryCta": "See the work",
+    "barLabel": "SELECTED WORK / 2026",
+    "barScope": "BRAND BOOK · 2026",
+    "beltLabel": "Selected work"
+  },
+  "footer": {
+    "rail": ["Not built for the moment.", "BRAND FACTORY · AUH", "Built for what comes next."],
+    "logo": { "a": "BRAIN", "b": "MEDIA", "c": "STUDIO" },
+    "arch": "Project archive",
+    "capabilities": {
+      "title": "Capabilities",
+      "links": [
+        { "label": "Identity", "href": "#" },
+        { "label": "Arabic identity", "href": "#" },
+        { "label": "Operations", "href": "#" },
+        { "label": "Digital build", "href": "#" }
+      ]
+    },
+    "studio": {
+      "title": "Studio",
+      "links": [
+        { "label": "Services", "href": "#services" },
+        { "label": "Case studies", "href": "#work" },
+        { "label": "About", "href": "#studio" },
+        { "label": "Insights", "href": "#insights" }
+      ]
+    },
+    "contact": {
+      "title": "Contact",
+      "links": [
+        { "label": "Book a call", "href": "#contact" },
+        { "label": "hello@brainmedia.ae", "href": "mailto:hello@brainmedia.ae" },
+        { "label": "WhatsApp", "href": "#" },
+        { "label": "Instagram", "href": "#" }
+      ]
+    },
+    "meta": ["EST. 2026", "ABU DHABI · UAE", "24.4539° N, 54.3773° E"],
+    "call": {
+      "talkLabel": "LET'S TALK",
+      "talk": "Book a strategy call",
+      "mailLabel": "SEND EMAIL",
+      "mail": "hello@brainmedia.ae"
+    },
+    "bottom": {
+      "copy": "© 2026 BRAIN MEDIA · Branding & digital operations studio",
+      "privacy": "Privacy policy",
+      "terms": "Terms"
+    },
+    "quote": "Request a quote",
+    "socials": [
+      { "label": "Instagram", "text": "IG" },
+      { "label": "Behance", "text": "Bē" },
+      { "label": "TikTok", "text": "TT" }
+    ]
+  }
+}

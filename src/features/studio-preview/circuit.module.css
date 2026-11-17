@@ -1,0 +1,340 @@
+/* ============================================================
+   OPTION 03 — CIRCUIT
+   The four problems as nodes on one system line. A pulse travels
+   with scroll; each node flips FAIL → OK and the line ends in a
+   single system.
+   ============================================================ */
+
+.wrap {
+  --p: 1;
+  position: relative;
+  overflow: hidden;
+  border-block: 1px dashed var(--line-d);
+  padding-block: clamp(48px, 6.4vw, 96px);
+  background:
+    radial-gradient(70% 50% at 100% 12%, rgba(251, 226, 61, 0.07), transparent 62%),
+    var(--bg);
+}
+
+.inner {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+/* ── head ────────────────────────────────────────────────────── */
+.head {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(24px, 5vw, 68px);
+  align-items: end;
+  margin-bottom: clamp(38px, 5vw, 68px);
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.label::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  background: var(--yellow);
+}
+
+.title {
+  margin: 16px 0 0;
+  font-family: var(--f-disp);
+  font-size: clamp(28px, 4.2vw, 52px);
+  font-weight: 600;
+  line-height: 1.16;
+  letter-spacing: -0.012em;
+}
+
+.aside {
+  padding-bottom: 4px;
+}
+
+.aside p {
+  max-width: 40ch;
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--muted);
+}
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--muted-2);
+}
+
+.live i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--yellow);
+  box-shadow: 0 0 10px rgba(251, 226, 61, 0.7);
+  animation: blink 2.4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* ── line + items ────────────────────────────────────────────── */
+.board {
+  position: relative;
+}
+
+.list {
+  position: relative;
+  padding-inline-start: 66px;
+}
+
+.spine {
+  position: absolute;
+  inset-inline-start: 13px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background-image: linear-gradient(180deg, var(--line) 0 5px, transparent 5px 11px);
+  background-size: 1px 11px;
+}
+
+.fill {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  width: 1px;
+  height: calc(var(--p, 1) * 100%);
+  background: var(--yellow);
+  box-shadow: 0 0 10px rgba(251, 226, 61, 0.55);
+}
+
+.dot {
+  position: absolute;
+  inset-inline-start: -3px;
+  top: calc(var(--p, 1) * 100%);
+  width: 7px;
+  height: 7px;
+  margin-top: -3.5px;
+  border-radius: 50%;
+  background: var(--yellow);
+  box-shadow:
+    0 0 0 4px rgba(251, 226, 61, 0.12),
+    0 0 18px rgba(251, 226, 61, 0.75);
+}
+
+.item {
+  --a: clamp(0, calc((var(--p, 1) - var(--t, 0)) * 16), 1);
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  padding-block: clamp(18px, 2.4vw, 26px);
+  border-bottom: 1px dashed var(--line-d);
+  opacity: calc(0.42 + 0.58 * var(--a));
+}
+
+.item:last-child {
+  border-bottom: 0;
+}
+
+/* node */
+.node {
+  position: absolute;
+  inset-inline-start: -66px;
+  top: clamp(20px, 2.5vw, 28px);
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+}
+
+.node span {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.nodeIdle {
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+}
+
+.nodeOn {
+  background: var(--yellow);
+  box-shadow: 0 0 0 4px rgba(251, 226, 61, 0.1), 0 0 18px rgba(251, 226, 61, 0.35);
+  opacity: var(--a);
+}
+
+.node b {
+  position: absolute;
+  font-family: var(--f-lat);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.numIdle {
+  color: var(--muted-2);
+  opacity: calc(1 - var(--a));
+}
+
+.numOn {
+  color: #0a0a0a;
+  opacity: var(--a);
+}
+
+/* copy */
+.copyTop {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.status {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  width: 44px;
+  height: 16px;
+  place-items: center;
+  font-family: var(--f-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.14em;
+  border-radius: 3px;
+  border: 1px solid var(--line-d);
+  overflow: hidden;
+}
+
+.status i {
+  position: absolute;
+  font-style: normal;
+}
+
+.fail {
+  color: var(--red);
+  opacity: calc(1 - var(--a));
+}
+
+.ok {
+  color: var(--yellow);
+  opacity: var(--a);
+}
+
+.copy h3 {
+  margin: 0;
+  font-family: var(--f-disp);
+  font-size: clamp(21px, 2.6vw, 32px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.008em;
+}
+
+.copy p {
+  margin: 0;
+  max-width: 54ch;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+/* ── result ──────────────────────────────────────────────────── */
+.result {
+  --r: clamp(0, calc((var(--p, 1) - 0.84) * 10), 1);
+  margin-top: clamp(32px, 4.2vw, 54px);
+  padding-inline-start: 66px;
+  opacity: var(--r);
+  transform: translateY(calc((1 - var(--r)) * 14px));
+}
+
+.resultLabel {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  color: var(--yellow);
+  margin-bottom: 10px;
+}
+
+.resultTitle {
+  margin: 0;
+  font-family: var(--f-disp);
+  font-size: clamp(34px, 5.2vw, 64px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--yellow);
+}
+
+.resultNote {
+  margin: 10px 0 0;
+  max-width: 46ch;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--muted);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 20px;
+}
+
+.chip {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 226, 61, 0.3);
+  background: rgba(251, 226, 61, 0.06);
+  font-size: 11.5px;
+  color: #ded9c2;
+}
+
+@media (max-width: 920px) {
+  .head {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 22px;
+  }
+
+  .list,
+  .result {
+    padding-inline-start: 48px;
+  }
+
+  .node {
+    inset-inline-start: -48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live i {
+    animation: none;
+  }
+
+  .item {
+    opacity: 1;
+  }
+
+  .result {
+    opacity: 1;
+    transform: none;
+  }
+}

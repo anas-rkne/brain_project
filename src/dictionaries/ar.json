@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "title": "برين ميديا — مصنع براندات",
+    "description": "هوية تُبنى من الصفر، تشغيل يمشي كل يوم، وموقع ومتجر يبيع فعلاً — بلا وعود فاضية."
+  },
+  "common": {
+    "skip": "تجاوز إلى المحتوى",
+    "menu": "القائمة",
+    "close": "إغلاق",
+    "language": "اللغة"
+  },
+  "nav": {
+    "ariaLabel": "التنقل",
+    "links": [
+      { "label": "الخدمات", "href": "#services" },
+      { "label": "دراسات الحالة", "href": "#work" },
+      { "label": "الاستوديو", "href": "#studio" },
+      { "label": "رؤى", "href": "#insights" },
+      { "label": "تواصل", "href": "#contact" }
+    ],
+    "cta": "ابدأ مشروع"
+  },
+  "hero": {
+    "line1a": "بنبني",
+    "line1b": "براندات",
+    "line2a": "ومنشغّلها",
+    "line2b": "كل يوم",
+    "aria": "بنبني براندات، ومنشغّلها كل يوم.",
+    "lead": "هوية تُبنى من الصفر، تشغيل يمشي كل يوم، وموقع ومتجر يبيع فعلاً — بلا وعود فاضية.",
+    "primaryCta": "احجز مكالمة ١٥ دقيقة",
+    "secondaryCta": "شوف الأعمال",
+    "barLabel": "SELECTED WORK / 2026",
+    "barScope": "BRAND BOOK · 2026",
+    "beltLabel": "أعمال مختارة"
+  },
+  "footer": {
+    "rail": ["مش مصمّم للحظة.", "BRAND FACTORY · AUH", "مصمّم للي بعدها."],
+    "logo": { "a": "BRAIN", "b": "MEDIA", "c": "STUDIO" },
+    "arch": "أرشيف المشاريع",
+    "capabilities": {
+      "title": "القدرات",
+      "links": [
+        { "label": "الهوية", "href": "#" },
+        { "label": "الهوية العربية", "href": "#" },
+        { "label": "التشغيل", "href": "#" },
+        { "label": "البناء الرقمي", "href": "#" }
+      ]
+    },
+    "studio": {
+      "title": "الاستوديو",
+      "links": [
+        { "label": "الخدمات", "href": "#services" },
+        { "label": "دراسات الحالة", "href": "#work" },
+        { "label": "من نحن", "href": "#studio" },
+        { "label": "رؤى", "href": "#insights" }
+      ]
+    },
+    "contact": {
+      "title": "تواصل",
+      "links": [
+        { "label": "احجز مكالمة", "href": "#contact" },
+        { "label": "hello@brainmedia.ae", "href": "mailto:hello@brainmedia.ae" },
+        { "label": "واتساب", "href": "#" },
+        { "label": "انستغرام", "href": "#" }
+      ]
+    },
+    "meta": ["EST. 2026", "ABU DHABI · UAE", "24.4539° N, 54.3773° E"],
+    "call": {
+      "talkLabel": "LET'S TALK",
+      "talk": "احجز مكالمة استراتيجية",
+      "mailLabel": "SEND EMAIL",
+      "mail": "hello@brainmedia.ae"
+    },
+    "bottom": {
+      "copy": "© 2026 BRAIN MEDIA · استوديو براندنغ وتشغيل رقمي",
+      "privacy": "سياسة الخصوصية",
+      "terms": "الشروط"
+    },
+    "quote": "اطلب عرض سعر",
+    "socials": [
+      { "label": "Instagram", "text": "IG" },
+      { "label": "Behance", "text": "Bē" },
+      { "label": "TikTok", "text": "TT" }
+    ]
+  }
+}

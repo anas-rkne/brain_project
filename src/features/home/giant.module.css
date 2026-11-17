@@ -1,0 +1,415 @@
+/* The nameplate — thesis section.
+   One ink (bone) + one action colour (yellow). No glow, no gradients. */
+
+.wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: clamp(560px, 78vh, 880px);
+  padding-block: clamp(52px, 6vw, 88px);
+  padding-inline: var(--pad);
+  border-block: 1px dashed var(--line-d);
+  background: #090909;
+}
+
+.plate {
+  position: relative;
+  width: 100%;
+  max-width: calc(var(--maxw) - var(--pad) * 2);
+  margin-inline: auto;
+  padding: clamp(22px, 3vw, 46px) clamp(18px, 2.8vw, 40px) clamp(20px, 2.4vw, 34px);
+  border: 1px solid var(--line-d);
+  background: #0b0b0b;
+}
+
+/* ── the engraved surface (inside the plate only) ──────────────── */
+.field {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.field[data-static] {
+  background-image: radial-gradient(circle, rgba(243, 241, 234, 0.07) 1px, transparent 1.4px);
+  background-size: 24px 24px;
+}
+
+.plotTrack {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.plot {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  background: linear-gradient(90deg, rgba(251, 226, 61, 0.5) 0 1px, transparent 1px);
+  opacity: 0;
+  transform: translateX(0);
+  animation: plot 19s linear infinite;
+  animation-play-state: paused;
+  will-change: transform;
+}
+
+.plate[data-on="true"] .plot {
+  opacity: 0.5;
+}
+
+.plate[data-visible="true"] .plot {
+  animation-play-state: running;
+}
+
+:global([dir="rtl"]) .plot {
+  --to: -100%;
+  background: linear-gradient(270deg, rgba(251, 226, 61, 0.5) 0 1px, transparent 1px);
+}
+
+@keyframes plot {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--to, 100%));
+  }
+}
+
+/* content sits above the surface */
+.bar,
+.lines,
+.current,
+.foot {
+  position: relative;
+  z-index: 1;
+}
+
+/* registration corners, outside the rule */
+.tick {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border: 0 solid var(--yellow);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.6s var(--ease);
+}
+
+.tick[data-c="tl"] {
+  top: -6px;
+  inset-inline-start: -6px;
+  border-top-width: 1px;
+  border-inline-start-width: 1px;
+}
+
+.tick[data-c="tr"] {
+  top: -6px;
+  inset-inline-end: -6px;
+  border-top-width: 1px;
+  border-inline-end-width: 1px;
+}
+
+.tick[data-c="bl"] {
+  bottom: -6px;
+  inset-inline-start: -6px;
+  border-bottom-width: 1px;
+  border-inline-start-width: 1px;
+}
+
+.tick[data-c="br"] {
+  bottom: -6px;
+  inset-inline-end: -6px;
+  border-bottom-width: 1px;
+  border-inline-end-width: 1px;
+}
+
+.plate[data-on="true"] .tick {
+  opacity: 1;
+}
+
+/* ── plate header ─────────────────────────────────────────────── */
+.bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: clamp(20px, 3vw, 38px);
+}
+
+.lab {
+  font-family: var(--f-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  color: var(--muted-2);
+}
+
+.no {
+  font-family: var(--f-mono);
+  font-size: 9.5px;
+  color: var(--muted-2);
+}
+
+/* ── the statement ────────────────────────────────────────────── */
+.lines {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: var(--f-disp);
+  user-select: none;
+}
+
+.line {
+  --fill: 243, 241, 234;
+  --stroke: 243, 241, 234;
+
+  display: block;
+  line-height: 1.1;
+  white-space: nowrap;
+  transition:
+    -webkit-text-fill-color 0.45s var(--ease),
+    -webkit-text-stroke-color 0.45s var(--ease);
+}
+
+.line[data-i="1"] {
+  font-size: clamp(24px, 2.7vw, 40px);
+  font-weight: 500;
+}
+
+.line[data-i="2"] {
+  font-size: clamp(36px, 5.2vw, 76px);
+  font-weight: 600;
+}
+
+.line[data-i="3"] {
+  --fill: 251, 226, 61;
+  --stroke: 251, 226, 61;
+
+  font-size: clamp(44px, 7.4vw, 112px);
+  font-weight: 700;
+}
+
+.plate[data-on="true"] .line {
+  -webkit-text-fill-color: rgb(var(--fill));
+  color: rgb(var(--fill));
+  -webkit-text-stroke: 0 transparent;
+}
+
+.plate[data-on="false"] .line {
+  -webkit-text-fill-color: rgba(var(--fill), 0);
+  color: rgba(var(--fill), 0);
+  -webkit-text-stroke: 1.3px rgba(var(--stroke), 0.38);
+}
+
+/* the current travels along the rule, once */
+.plate[data-on="true"] .line[data-i="1"] {
+  transition-delay: 0ms;
+}
+
+.plate[data-on="true"] .line[data-i="2"] {
+  transition-delay: 70ms;
+}
+
+.plate[data-on="true"] .line[data-i="3"] {
+  transition-delay: 140ms;
+}
+
+.current {
+  display: block;
+  width: min(100%, 780px);
+  height: 2px;
+  margin-top: clamp(20px, 2.6vw, 32px);
+  background: var(--yellow);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.85s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.plate[data-on="true"] .current {
+  transform: scaleX(1);
+}
+
+:global([dir="rtl"]) .current {
+  transform-origin: right;
+}
+
+/* ── foot + switch ────────────────────────────────────────────── */
+.foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 22px 32px;
+  margin-top: clamp(24px, 3vw, 38px);
+}
+
+.foot p {
+  max-width: 42ch;
+  color: #a5a29a;
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+
+.switchWrap {
+  justify-self: end;
+}
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding-block: 6px;
+  color: var(--txt);
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.track {
+  position: relative;
+  width: 42px;
+  height: 20px;
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  transition:
+    background 0.4s var(--ease),
+    border-color 0.4s var(--ease);
+}
+
+.track i {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 3px;
+  width: 12px;
+  height: 12px;
+  margin-block-start: -6px;
+  border-radius: 50%;
+  background: var(--muted-2);
+  transform: translateX(0);
+  transition:
+    transform 0.45s var(--spring),
+    background 0.4s var(--ease);
+}
+
+.plate[data-on="true"] .track {
+  border-color: rgba(251, 226, 61, 0.5);
+  background: rgba(251, 226, 61, 0.09);
+}
+
+.plate[data-on="true"] .track i {
+  background: var(--yellow);
+  transform: translateX(22px);
+}
+
+:global([dir="rtl"]) .plate[data-on="true"] .track i {
+  transform: translateX(-22px);
+}
+
+.switchLabel {
+  transition: color 0.35s var(--ease);
+}
+
+.arrow {
+  font-size: 13px;
+  color: var(--muted);
+  transition:
+    color 0.35s var(--ease),
+    transform 0.4s var(--ease);
+}
+
+.switch:hover .switchLabel {
+  color: var(--yellow);
+}
+
+.switch:hover .arrow {
+  color: var(--yellow);
+  transform: translateX(-3px);
+}
+
+:global([dir="ltr"]) .switch:hover .arrow {
+  transform: translateX(3px);
+}
+
+/* print registration rule under the switch */
+.reg {
+  position: relative;
+  display: block;
+  height: 1px;
+  margin-top: 4px;
+  background: rgba(251, 226, 61, 0.42);
+}
+
+.reg::before,
+.reg::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  width: 1px;
+  height: 5px;
+  background: rgba(251, 226, 61, 0.6);
+}
+
+.reg::before {
+  inset-inline-start: 0;
+}
+
+.reg::after {
+  inset-inline-end: 0;
+}
+
+/* ── responsive ───────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .wrap {
+    min-height: 0;
+    padding-block: clamp(46px, 9vw, 64px);
+  }
+
+  .current {
+    width: 100%;
+  }
+
+  .foot {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .switchWrap {
+    justify-self: start;
+  }
+
+  .plate[data-on="false"] .line,
+  .plate[data-on="true"] .line {
+    -webkit-text-stroke-width: 1px;
+  }
+}
+
+@media (max-width: 520px) {
+  .line[data-i="1"] {
+    font-size: 22px;
+  }
+
+  .line[data-i="2"] {
+    font-size: 33px;
+  }
+
+  .line[data-i="3"] {
+    font-size: 43px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line,
+  .current,
+  .track,
+  .track i,
+  .tick,
+  .arrow,
+  .switchLabel {
+    transition: none !important;
+  }
+}

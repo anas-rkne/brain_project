@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SPECIALTIES — specimen sheet (mockup)</title>
+<style>
+  /* ---------- fonts (self-hosted, same files as the site) ---------- */
+  @font-face{font-family:'Changa';font-style:normal;font-weight:400 800;font-display:block;src:url('/fonts/6.woff2') format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC;}
+  @font-face{font-family:'Changa';font-style:normal;font-weight:400 800;font-display:block;src:url('/fonts/8.woff2') format('woff2');unicode-range:U+0000-00FF;}
+  @font-face{font-family:'IBM Plex Sans Arabic';font-style:normal;font-weight:400;font-display:block;src:url('/fonts/37.woff2') format('woff2');unicode-range:U+0600-06FF,U+0750-077F;}
+  @font-face{font-family:'IBM Plex Sans Arabic';font-style:normal;font-weight:400;font-display:block;src:url('/fonts/40.woff2') format('woff2');unicode-range:U+0000-00FF;}
+  @font-face{font-family:'IBM Plex Mono';font-style:normal;font-weight:400;font-display:block;src:url('/fonts/26.woff2') format('woff2');unicode-range:U+0000-00FF;}
+  @font-face{font-family:'Aref Ruqaa';font-style:normal;font-weight:400;font-display:block;src:url('/fonts/0.woff2') format('woff2');unicode-range:U+0600-06FF,U+0750-077F;}
+
+  :root{
+    --paper:#f3f0e8;
+    --paper-2:#ece8dd;
+    --ink:#1b1a17;
+    --ink-2:#585650;
+    --muted:#8a877d;
+    --line:rgba(27,26,23,.16);
+    --line-soft:rgba(27,26,23,.09);
+    --yellow:#fbe23d;
+    --f-disp:'Changa',sans-serif;
+    --f-body:'IBM Plex Sans Arabic',sans-serif;
+    --f-mono:'IBM Plex Mono',monospace;
+    --f-hand:'Aref Ruqaa',serif;
+    --ease:cubic-bezier(.16,1,.3,1);
+    --pad:clamp(20px,3.2vw,44px);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:#0a0a0a}
+  body{font-family:var(--f-body);color:var(--ink);-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+  /* dark band above, just to show the rhythm break */
+  .before{height:74px;background:#0a0a0a;position:relative}
+  .before::after{content:"SHEET 01 — THE IDEA / ENDS ABOVE";position:absolute;inset-inline-start:var(--pad);bottom:22px;font-family:var(--f-mono);font-size:8.5px;letter-spacing:.16em;color:rgba(255,255,255,.24)}
+
+  .sheet{
+    position:relative;
+    background:var(--paper);
+    padding:0 var(--pad) 0;
+    overflow:hidden;
+    isolation:isolate;
+  }
+
+  /* paper: grid + grain + edge shading */
+  .sheet::before{
+    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(90deg,var(--line-soft) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+    background-size:25% 100%,25% 100%;
+    background-position:0 0,100% 0;
+    opacity:.55;
+  }
+  .sheet::after{
+    content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='.5'/></svg>");
+    opacity:.22;mix-blend-mode:multiply;
+  }
+
+  .sheet-in{position:relative;z-index:2;max-width:1320px;margin:0 auto}
+
+  /* ---------- top bar ---------- */
+  .bar{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:16px 0 14px;border-bottom:1px solid var(--line);
+    font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;color:var(--muted);
+  }
+  .bar b{font-weight:400;color:var(--ink)}
+  .bar .mid{display:flex;align-items:center;gap:8px}
+  .bar .dot{width:5px;height:5px;background:var(--ink);border-radius:50%}
+
+  /* folder tab — half outside the sheet, like a real file tab */
+  .tab{
+    position:absolute;inset-block-start:0;inset-inline-end:calc(var(--pad) - 6px);z-index:6;
+    transform:translateY(-56%);
+    display:flex;flex-direction:column;align-items:center;gap:1px;
+    padding:8px 11px 9px;background:var(--yellow);
+    font-family:var(--f-mono);font-size:7.5px;letter-spacing:.1em;color:#2a2405;
+    box-shadow:0 10px 20px -14px rgba(0,0,0,.55);
+  }
+  .tab b{font-family:var(--f-disp);font-weight:700;font-size:14px;letter-spacing:0;line-height:1}
+
+  /* ---------- head ---------- */
+  .head{
+    display:grid;grid-template-columns:minmax(0,1.46fr) minmax(0,.54fr);
+    gap:clamp(24px,4.4vw,72px);align-items:start;
+    padding:clamp(34px,4.2vw,54px) 0 clamp(24px,2.6vw,34px);
+  }
+  .lead-meta{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding-bottom:12px;margin-bottom:16px;border-bottom:1px solid var(--line);
+    font-family:var(--f-mono);font-size:8.5px;letter-spacing:.13em;color:var(--muted);
+  }
+  .lead-meta b{font-weight:400;color:var(--ink)}
+  .label{
+    display:inline-flex;align-items:center;gap:9px;
+    font-family:var(--f-mono);font-size:9.5px;letter-spacing:.16em;color:var(--ink-2);
+    margin-bottom:20px;
+  }
+  .label::before{content:"";width:22px;height:1px;background:var(--ink)}
+  .h{
+    font-family:var(--f-disp);font-weight:800;font-size:clamp(34px,4.5vw,62px);
+    line-height:1.1;letter-spacing:-.005em;
+  }
+  .h .mark{
+    position:relative;z-index:0;
+    font-family:var(--f-hand);font-weight:400;font-size:1.06em;line-height:1;
+    padding-inline:.05em;
+  }
+  .h .mark::after{
+    content:"";position:absolute;z-index:-1;
+    inset-inline:-.05em;bottom:.12em;height:.46em;
+    background:rgba(251,226,61,.72);
+    transform:rotate(-.7deg);
+  }
+  .lead{padding-top:2px}
+  .lead p{font-size:clamp(13px,1.06vw,14.5px);line-height:2;color:var(--ink-2);max-width:38ch}
+  .lead .note{
+    margin-top:16px;font-family:var(--f-hand);font-size:14px;color:#7d6f2c;
+    transform:rotate(-1.6deg);display:inline-block;
+  }
+
+  /* ---------- body ---------- */
+  .body{
+    display:grid;grid-template-columns:minmax(0,1fr) clamp(300px,32vw,392px);
+    gap:clamp(28px,4vw,64px);align-items:start;
+    padding-bottom:clamp(30px,4vw,52px);
+  }
+
+  /* --- index rows --- */
+  .rows{border-top:1.5px solid var(--ink)}
+  .row{
+    position:relative;display:grid;width:100%;text-align:start;
+    grid-template-columns:46px minmax(0,1fr) auto;align-items:center;
+    gap:clamp(10px,1.4vw,20px);
+    padding:clamp(17px,2vw,25px) 8px clamp(16px,1.9vw,23px);
+    border-bottom:1px solid var(--line);
+    transition:background-color .45s var(--ease);
+  }
+  .row::after{
+    content:"";position:absolute;inset-block-end:-1px;inset-inline-start:0;height:1.5px;width:0;
+    background:var(--yellow);transition:width .6s var(--ease);
+  }
+  .row:hover,.row[data-on]{background:rgba(27,26,23,.03)}
+  .row[data-on]::after{width:100%}
+
+  .num{
+    justify-self:start;display:grid;place-items:center;min-width:28px;height:22px;padding-inline:5px;
+    font-family:var(--f-mono);font-size:9.5px;letter-spacing:.08em;color:var(--muted);
+    border:1px solid transparent;border-radius:2px;
+    transition:background-color .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease);
+  }
+  .row[data-on] .num{background:var(--ink);color:var(--yellow);border-color:var(--ink)}
+
+  .row-h{display:flex;flex-direction:column;gap:5px;transition:transform .55s var(--ease)}
+  .row[data-on] .row-h{transform:translateX(-7px)}
+  .row h3{
+    font-family:var(--f-disp);font-weight:600;font-size:clamp(19px,2.1vw,28px);
+    line-height:1.24;
+  }
+  .row .meta{
+    font-size:clamp(10.5px,1vw,12px);line-height:1.6;color:var(--muted);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:52ch;
+  }
+  .row .meta i{font-style:normal;color:rgba(27,26,23,.3);padding-inline:6px}
+
+  .row-end{display:flex;align-items:center;gap:12px;flex:none}
+  .plate-tag{font-family:var(--f-mono);font-size:8.5px;letter-spacing:.12em;color:var(--muted);opacity:0;transform:translateX(6px);transition:opacity .35s var(--ease),transform .45s var(--ease)}
+  .row[data-on] .plate-tag{opacity:1;transform:none}
+  .arrow{
+    display:grid;place-items:center;width:30px;height:30px;border-radius:50%;
+    border:1px solid var(--line);color:var(--ink);
+    transform:rotate(0deg);transition:background-color .4s var(--ease),color .4s var(--ease),border-color .4s var(--ease),transform .5s var(--ease);
+  }
+  .arrow svg{width:11px;height:11px;transform:scaleX(-1)}
+  .row[data-on] .arrow{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:rotate(45deg)}
+
+  /* --- specimen plate --- */
+  .mount{position:sticky;top:76px}
+  .mount-in{position:relative;padding:16px 10px 0}
+  .stack{position:relative;aspect-ratio:4/5}
+  .plate{
+    position:absolute;inset:0;background:#fff;padding:9px 9px 0;
+    box-shadow:0 26px 48px -30px rgba(31,26,10,.55),0 1px 0 rgba(0,0,0,.05);
+    opacity:0;transform:rotate(var(--r,2.2deg)) scale(.965) translateY(12px);
+    transition:opacity .5s var(--ease),transform .8s var(--ease);
+    display:flex;flex-direction:column;
+  }
+  .plate:nth-child(1){--r:2.2deg}
+  .plate:nth-child(2){--r:-2.8deg}
+  .plate:nth-child(3){--r:3.2deg}
+  .plate:nth-child(4){--r:-2deg}
+  .plate[data-on]{opacity:1;transform:rotate(-1.4deg) scale(1) translateY(0);z-index:2}
+  .plate img{width:100%;flex:1 1 0;min-height:0;object-fit:cover;filter:saturate(.96) contrast(1.02)}
+  .plate figcaption{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    padding:8px 2px 9px;font-family:var(--f-mono);font-size:8px;letter-spacing:.11em;color:var(--muted);
+  }
+  .plate figcaption b{font-weight:400;color:var(--ink)}
+
+  .crop{position:absolute;width:13px;height:13px;pointer-events:none}
+  .crop::before,.crop::after{content:"";position:absolute;background:rgba(27,26,23,.35)}
+  .crop::before{inset-block-start:0;inset-inline-start:0;width:13px;height:1px}
+  .crop::after{inset-block-start:0;inset-inline-start:0;width:1px;height:13px}
+  .crop.tl{inset-block-start:0;inset-inline-start:0}
+  .crop.tr{inset-block-start:0;inset-inline-end:0;transform:scaleX(-1)}
+  .crop.bl{inset-block-end:14px;inset-inline-start:0;transform:scaleY(-1)}
+  .crop.br{inset-block-end:14px;inset-inline-end:0;transform:scale(-1)}
+
+  .side-note{
+    position:absolute;inset-block-start:38%;inset-inline-start:-26px;
+    writing-mode:vertical-rl;font-family:var(--f-hand);font-size:12.5px;color:#8b8778;
+    letter-spacing:.02em;transform:rotate(180deg);
+  }
+  .stamp{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    margin-top:14px;padding-top:10px;border-top:1px dashed var(--line);
+    font-family:var(--f-mono);font-size:8px;letter-spacing:.11em;color:var(--muted);
+  }
+  .stamp b{font-weight:400;color:var(--ink)}
+  .stamp .seal{
+    display:grid;place-items:center;width:26px;height:26px;border-radius:50%;
+    border:1px solid rgba(27,26,23,.28);font-family:var(--f-disp);font-size:8px;font-weight:700;color:var(--ink);
+    letter-spacing:0;flex:none;
+  }
+
+  /* ---------- footer ---------- */
+  .foot{
+    display:flex;align-items:center;justify-content:space-between;gap:18px;
+    padding:15px 0 20px;border-top:1px solid var(--line);
+    font-family:var(--f-mono);font-size:8.5px;letter-spacing:.13em;color:var(--muted);
+  }
+  .foot b{font-weight:400;color:var(--ink)}
+  .foot .right{display:flex;align-items:center;gap:10px}
+  .foot .bar-y{width:26px;height:3px;background:var(--yellow)}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:1080px){
+    .head{grid-template-columns:1fr;gap:22px;align-items:start}
+    .lead p{max-width:56ch}
+    .body{grid-template-columns:1fr;gap:26px}
+    .mount{position:static;order:-1}
+    .mount-in{padding:0}
+    .stack{aspect-ratio:16/11}
+    .side-note{display:none}
+  }
+  @media (max-width:640px){
+    .sheet{padding-inline:18px}
+    .bar{font-size:8px;letter-spacing:.1em}
+    .bar .mid{display:none}
+    .tab{inset-inline-start:18px;padding:7px 10px}
+    .head{padding-top:34px}
+    .h{font-size:clamp(27px,7.6vw,34px);line-height:1.2}
+    .row{grid-template-columns:34px minmax(0,1fr) auto;gap:8px;padding:16px 4px 15px}
+    .row h3{font-size:19px}
+    .row .meta{white-space:normal;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
+    .row-end .plate-tag{display:none}
+    .arrow{width:26px;height:26px}
+    .arrow svg{width:9px;height:9px}
+    .foot{flex-wrap:wrap;gap:8px;font-size:7.5px}
+    .foot .right{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition-duration:.01ms !important;animation-duration:.01ms !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="before"></div>
+
+<section class="sheet" id="specialties">
+  <span class="tab" aria-hidden="true"><b id="tab-n">01</b>FILE</span>
+
+  <div class="sheet-in">
+
+    <div class="bar">
+      <span><b>BRAIN MEDIA</b> — SPECIMEN FILE</span>
+      <span class="mid"><i class="dot"></i> FOUR DISCIPLINES · ONE SYSTEM</span>
+      <span>SHEET 02 / 04</span>
+    </div>
+
+    <header class="head">
+      <div>
+        <span class="label">(٠٢) التخصص</span>
+        <h2 class="h">متخصصون بالبراندات اللي<br />بتحتاج <span class="mark">وضوح</span> وثقة.</h2>
+      </div>
+      <div class="lead">
+        <p>بنشتغل مع مؤسسين وشركات بتكبر — من أول شعار، لتشغيل يومي، لموقع بيوقف قدام المنافسين.</p>
+        <span class="note">أربع عيّنات من دفتر الشغل ←</span>
+      </div>
+    </header>
+
+    <div class="body">
+
+      <div class="rows" role="tablist" aria-label="التخصصات">
+
+        <button class="row" type="button" role="tab" aria-selected="true" data-on>
+          <span class="num">01</span>
+          <span class="row-h">
+            <h3>هوية بصرية كاملة</h3>
+            <span class="meta">شعار <i>·</i> نظام لوني وخطي <i>·</i> تطبيقات <i>·</i> براند بوك جاهز للتنفيذ</span>
+          </span>
+          <span class="row-end"><span class="plate-tag">PLATE 01</span><span class="arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 11 11 1M4 1h7v7"/></svg></span></span>
+        </button>
+
+        <button class="row" type="button" role="tab" aria-selected="false">
+          <span class="num">02</span>
+          <span class="row-h">
+            <h3>هوية عربية معاصرة</h3>
+            <span class="meta">حروف عربية <i>·</i> خط مخصص <i>·</i> اتجاه بصري إماراتي</span>
+          </span>
+          <span class="row-end"><span class="plate-tag">PLATE 02</span><span class="arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 11 11 1M4 1h7v7"/></svg></span></span>
+        </button>
+
+        <button class="row" type="button" role="tab" aria-selected="false">
+          <span class="num">03</span>
+          <span class="row-h">
+            <h3>تشغيل رقمي مستمر</h3>
+            <span class="meta">سوشيال <i>·</i> محتوى <i>·</i> إعلانات <i>·</i> تقارير شهرية</span>
+          </span>
+          <span class="row-end"><span class="plate-tag">PLATE 03</span><span class="arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 11 11 1M4 1h7v7"/></svg></span></span>
+        </button>
+
+        <button class="row" type="button" role="tab" aria-selected="false">
+          <span class="num">04</span>
+          <span class="row-h">
+            <h3>بناء رقمي</h3>
+            <span class="meta">موقع <i>·</i> متجر <i>·</i> تجربة موبايل أول</span>
+          </span>
+          <span class="row-end"><span class="plate-tag">PLATE 04</span><span class="arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 11 11 1M4 1h7v7"/></svg></span></span>
+        </button>
+
+      </div>
+
+      <div class="mount" aria-hidden="true">
+        <div class="mount-in">
+          <span class="side-note">عيّنات من ملف العميل</span>
+          <div class="stack">
+            <figure class="plate" data-on>
+              <img src="/assets/la-dune-06.jpg" alt="" />
+              <figcaption><b>SPECIMEN 01</b><span>IDENTITY SYSTEM</span></figcaption>
+            </figure>
+            <figure class="plate">
+              <img src="/assets/proj-b-01.jpg" alt="" />
+              <figcaption><b>SPECIMEN 02</b><span>ARABIC IDENTITY</span></figcaption>
+            </figure>
+            <figure class="plate">
+              <img src="/assets/la-dune-03.jpg" alt="" />
+              <figcaption><b>SPECIMEN 03</b><span>OPERATIONS</span></figcaption>
+            </figure>
+            <figure class="plate">
+              <img src="/assets/la-dune-04.jpg" alt="" />
+              <figcaption><b>SPECIMEN 04</b><span>DIGITAL</span></figcaption>
+            </figure>
+          </div>
+          <span class="crop tl"></span><span class="crop tr"></span><span class="crop bl"></span><span class="crop br"></span>
+          <div class="stamp">
+            <span class="seal">BM</span>
+            <span>LĀ DUNE <b>/</b> RIMTH <b>/</b> AUH</span>
+            <b>2026</b>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="foot">
+      <span><b>BRAIN MEDIA</b> · BRAND FACTORY</span>
+      <span class="right"><i class="bar-y"></i> BRAND → SYSTEM → RUN</span>
+      <span>24.4539° N · 54.3773° E</span>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const rows = [...document.querySelectorAll('.row')];
+  const plates = [...document.querySelectorAll('.plate')];
+  const tabN = document.getElementById('tab-n');
+
+  const set = (i) => {
+    rows.forEach((row, k) => {
+      const on = k === i;
+      row.toggleAttribute('data-on', on);
+      row.setAttribute('aria-selected', String(on));
+    });
+    plates.forEach((plate, k) => plate.toggleAttribute('data-on', k === i));
+    tabN.textContent = String(i + 1).padStart(2, '0');
+  };
+
+  rows.forEach((row, i) => {
+    row.addEventListener('mouseenter', () => set(i));
+    row.addEventListener('focus', () => set(i));
+    row.addEventListener('click', () => {
+      set(i);
+      history.replaceState(null, '', '#' + String(i + 1).padStart(2, '0'));
+    });
+  });
+
+  const fromHash = parseInt(location.hash.slice(1), 10);
+  set(fromHash >= 1 && fromHash <= 4 ? fromHash - 1 : 0);
+  document.documentElement.dataset.ready = '1';
+</script>
+</body>
+</html>

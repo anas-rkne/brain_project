@@ -1,0 +1,586 @@
+/* ============================================================
+   STUDIO — «التجميع» / ASSEMBLY
+   A sticky stage where ~7,600 metal shards keep re-forming into
+   five Arabic words. The HUD is one editorial slot — numeral,
+   title, problem → fix — that changes with each formation.
+   No card grid, no dashboard.
+   ============================================================ */
+
+.wrap {
+  position: relative;
+  height: 320vh;
+  background: var(--bg);
+  border-block: 1px dashed var(--line-d);
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  --mx: -999px;
+  --my: -999px;
+  background:
+    radial-gradient(62% 48% at 50% 44%, rgba(251, 226, 61, 0.075), transparent 70%),
+    radial-gradient(90% 60% at 50% 108%, rgba(255, 255, 255, 0.035), transparent 62%),
+    var(--bg);
+}
+
+/* ── coordinate field ────────────────────────────────────────── */
+/* The lattice the shards assemble on. Behind the canvas, so the
+   word itself occludes it — no extra masking needed. */
+.field,
+.fieldLit {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(236, 233, 222, 0.95) 0.85px, transparent 1.05px);
+  background-size: 26px 26px;
+}
+
+.field {
+  opacity: 0.075;
+  mask-image: radial-gradient(118% 88% at 50% 52%, transparent 24%, #000 76%);
+  -webkit-mask-image: radial-gradient(118% 88% at 50% 52%, transparent 24%, #000 76%);
+}
+
+/* the patch that follows the pointer */
+.fieldLit {
+  opacity: 0.22;
+  mask-image: radial-gradient(circle 190px at var(--mx) var(--my), #000 0%, transparent 74%);
+  -webkit-mask-image: radial-gradient(circle 190px at var(--mx) var(--my), #000 0%, transparent 74%);
+}
+
+/* ── webgl layer ─────────────────────────────────────────────── */
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.8) 0%, rgba(10, 10, 10, 0) 24%),
+    linear-gradient(0deg, rgba(10, 10, 10, 0.92) 0%, rgba(10, 10, 10, 0) 34%),
+    radial-gradient(118% 88% at 50% 50%, transparent 42%, rgba(10, 10, 10, 0.58) 100%);
+}
+
+/* ── atmosphere ──────────────────────────────────────────────── */
+/* a slow light band, like a softbox passing over a set */
+.sweep {
+  position: absolute;
+  inset: -30% -12%;
+  pointer-events: none;
+  background: linear-gradient(104deg, transparent 41%, rgba(255, 255, 255, 0.045) 50%, transparent 59%);
+  animation: sweep 17s ease-in-out infinite;
+}
+
+@keyframes sweep {
+  0%,
+  100% {
+    transform: translate3d(-16%, 0, 0);
+  }
+  50% {
+    transform: translate3d(16%, 0, 0);
+  }
+}
+
+/* film grain — no blend mode, it would cost a full-screen composite */
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* the echo word: the chapter's Latin name, oversized, cropped */
+.ghost {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: clamp(44px, 6.4vh, 82px);
+  inset-inline-end: -2vw;
+  max-width: 122%;
+  font-family: var(--f-lat);
+  font-size: clamp(84px, 13.2vw, 220px);
+  font-weight: 700;
+  line-height: 0.78;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(236, 233, 222, 0.12);
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.7s var(--ease);
+}
+
+.ghost span {
+  display: block;
+  animation: ghost-in 1.1s var(--ease) both;
+}
+
+@keyframes ghost-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--f-disp);
+  font-size: clamp(72px, 15vw, 210px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: transparent;
+  background: linear-gradient(180deg, #ffffff 0%, #b9b6ab 46%, #6b6960 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ── hud ─────────────────────────────────────────────────────── */
+.hud {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  padding: clamp(84px, 10vh, 112px) var(--pad) clamp(32px, 4.6vh, 48px);
+  pointer-events: none;
+}
+
+/* ── top bar ─────────────────────────────────────────────────── */
+.top {
+  grid-row: 1;
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.label::before {
+  content: "";
+  width: 24px;
+  height: 2px;
+  background: var(--yellow);
+}
+
+.meta {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(14px, 2.4vw, 28px);
+  font-family: var(--f-mono);
+}
+
+.hint {
+  font-size: 9px;
+  letter-spacing: 0.26em;
+  color: var(--muted-2);
+  opacity: 0;
+  transition: opacity 0.6s var(--ease);
+}
+
+.hint[data-on] {
+  opacity: 1;
+}
+
+.count {
+  display: inline-flex;
+  align-items: baseline;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--txt-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.count i {
+  margin: 0 4px;
+  font-style: normal;
+  color: var(--muted-2);
+}
+
+/* ── statement (fades out as the first word lands) ───────────── */
+.headline {
+  grid-row: 2;
+  grid-column: 1;
+  align-self: start;
+  margin-top: clamp(8px, 2.4vh, 26px);
+  opacity: calc(1 - var(--fade, 0));
+  transform: translateY(calc(var(--fade, 0) * -16px));
+  will-change: opacity, transform;
+}
+
+.statement {
+  margin: 0;
+  max-width: 26ch;
+  font-family: var(--f-disp);
+  font-size: clamp(26px, 3.5vw, 48px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.016em;
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: clamp(12px, 2vh, 20px) 0 0;
+  font-family: var(--f-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  color: var(--muted-2);
+}
+
+.kicker i {
+  flex: none;
+  width: 5px;
+  height: 5px;
+  background: var(--yellow);
+  transform: rotate(45deg);
+}
+
+/* ── side caption ────────────────────────────────────────────── */
+.side {
+  position: absolute;
+  inset-inline-end: clamp(8px, 1.4vw, 20px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  writing-mode: vertical-rl;
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  pointer-events: none;
+}
+
+.side i {
+  width: 1px;
+  height: 30px;
+  background: linear-gradient(180deg, rgba(251, 226, 61, 0), var(--yellow));
+}
+
+/* ── bottom: the editorial slot ──────────────────────────────── */
+.bottom {
+  grid-row: 3;
+  grid-column: 1;
+}
+
+.slot {
+  position: relative;
+  padding-top: clamp(13px, 2vh, 20px);
+  border-top: 1px solid var(--line-d);
+}
+
+/* the hairline fills yellow with scroll — the only progress meter */
+.slot::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: -1px;
+  height: 1px;
+  background: var(--yellow);
+  box-shadow: 0 0 12px rgba(251, 226, 61, 0.35);
+  transform: scaleX(var(--p, 0));
+  transform-origin: 0 50%;
+  transition: transform 0.12s linear;
+}
+
+:global([dir="rtl"]) .slot::before {
+  transform-origin: 100% 50%;
+}
+
+.chapterHead {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(10px, 1.4vw, 18px);
+}
+
+.numeral {
+  font-family: var(--f-disp);
+  font-size: clamp(44px, 5.2vw, 76px);
+  font-weight: 700;
+  line-height: 0.76;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--txt-2);
+  transition: color 0.6s var(--ease);
+}
+
+.chapterTag {
+  font-family: var(--f-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.rule {
+  flex: 1;
+  height: 1px;
+  margin-bottom: 0.28em;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0));
+}
+
+:global([dir="rtl"]) .rule {
+  background: linear-gradient(270deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0));
+}
+
+.chapterTitle {
+  margin: clamp(8px, 1.2vh, 12px) 0 0;
+  max-width: 22ch;
+  font-family: var(--f-disp);
+  font-size: clamp(24px, 3vw, 40px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+  color: var(--txt);
+  animation: chapter-in 0.62s var(--ease) both;
+}
+
+@keyframes chapter-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* problem → fix */
+.swap {
+  display: grid;
+  max-width: 54ch;
+  margin-top: clamp(8px, 1.3vh, 12px);
+}
+
+.swap > p {
+  grid-area: 1 / 1;
+  margin: 0;
+}
+
+.desc {
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--muted);
+  transition:
+    opacity 0.45s var(--ease),
+    transform 0.45s var(--ease);
+}
+
+.fix {
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--txt-2);
+  opacity: 0;
+  transform: translateY(9px);
+  transition:
+    opacity 0.55s var(--ease) 0.06s,
+    transform 0.55s var(--ease) 0.06s;
+}
+
+.fixLabel {
+  display: inline-block;
+  margin-inline-end: 9px;
+  font-family: var(--f-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  vertical-align: 1px;
+}
+
+.slot[data-fix] .desc {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.slot[data-fix] .fix {
+  opacity: 1;
+  transform: none;
+}
+
+.note {
+  max-width: 54ch;
+  margin: clamp(8px, 1.3vh, 12px) 0 0;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* the payoff: the fifth formation is the fix */
+.slot[data-final] .numeral,
+.slot[data-final] .chapterTag {
+  color: var(--yellow);
+}
+
+.slot[data-final] .chapterTitle {
+  color: var(--yellow);
+}
+
+.slot[data-final] .rule {
+  background: linear-gradient(90deg, rgba(251, 226, 61, 0.5), rgba(251, 226, 61, 0));
+}
+
+:global([dir="rtl"]) .slot[data-final] .rule {
+  background: linear-gradient(270deg, rgba(251, 226, 61, 0.5), rgba(251, 226, 61, 0));
+}
+
+/* ── responsive ──────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .side {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    height: 300vh;
+  }
+
+  .hud {
+    padding: 74px clamp(16px, 4.6vw, 24px) clamp(18px, 3vh, 28px);
+  }
+
+  .statement {
+    max-width: 22ch;
+    font-size: clamp(23px, 6.4vw, 34px);
+  }
+
+  .ghost {
+    inset-block-start: 62px;
+    font-size: clamp(62px, 19vw, 120px);
+    -webkit-text-stroke-width: 1px;
+  }
+
+  .field,
+  .fieldLit {
+    background-size: 22px 22px;
+  }
+
+  .kicker {
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    gap: 7px;
+  }
+
+  .numeral {
+    font-size: clamp(32px, 9vw, 48px);
+  }
+
+  .chapterTitle {
+    max-width: 18ch;
+    font-size: clamp(20px, 5.4vw, 27px);
+  }
+
+  .desc,
+  .fix,
+  .note {
+    font-size: 12px;
+    line-height: 1.68;
+  }
+
+  .fixLabel {
+    font-size: 8px;
+  }
+
+  .hint {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .chapterTag {
+    display: none;
+  }
+
+  .numeral {
+    font-size: 32px;
+  }
+}
+
+@media (max-height: 720px) and (min-width: 900px) {
+  .headline {
+    margin-top: 4px;
+  }
+
+  .statement {
+    font-size: clamp(24px, 3vw, 38px);
+  }
+
+  .numeral {
+    font-size: clamp(34px, 4vw, 52px);
+  }
+
+  .chapterTitle {
+    font-size: clamp(21px, 2.5vw, 32px);
+  }
+
+  .desc,
+  .fix,
+  .note {
+    font-size: 12px;
+  }
+}
+
+/* ── reduced motion: one still frame, no scrub ───────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .wrap {
+    height: 100svh;
+  }
+
+  .stage {
+    position: relative;
+  }
+
+  .headline {
+    opacity: 0;
+  }
+
+  .sweep,
+  .ghost span {
+    animation: none;
+  }
+
+  .chapterTitle,
+  .desc,
+  .fix,
+  .note,
+  .slot::before,
+  .numeral,
+  .hint,
+  .ghost {
+    animation: none;
+    transition: none;
+  }
+
+  .slot[data-fix] .desc {
+    display: none;
+  }
+}

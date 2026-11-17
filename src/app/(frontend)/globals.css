@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* ============================================================
+   BRAIN MEDIA — DESIGN TOKENS
+   Ported 1:1 from prototype/index.html (editorial / print language)
+   ============================================================ */
+:root {
+  --bg: #0a0a0a;
+  --bg-2: #0d0d0d;
+  --surface: #121212;
+  --surface-2: #171717;
+  --surface-3: #1c1c1c;
+  --line: rgba(255, 255, 255, 0.12);
+  --line-d: rgba(255, 255, 255, 0.075);
+  --line-soft: rgba(255, 255, 255, 0.05);
+
+  --txt: #f3f1ea;
+  --txt-2: #c9c7c0;
+  --muted: #8d8b85;
+  --muted-2: #66645f;
+
+  --yellow: #fbe23d;
+  --yellow-deep: #d8c015;
+  --dark: #0a0a0a;
+  --red: #ff5b47;
+  --green: #7cc6a8;
+
+  /* Font stacks — self-hosted (see src/styles/fonts.css) */
+  --f-disp: "Changa", "Space Grotesk", sans-serif;
+  --f-body: "IBM Plex Sans Arabic", "Inter", sans-serif;
+  --f-hand: "Aref Ruqaa", serif;
+  --f-mono: "IBM Plex Mono", monospace;
+  --f-lat: "Space Grotesk", "Inter", sans-serif;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io: cubic-bezier(0.37, 0, 0.63, 1);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --spring: cubic-bezier(0.22, 1.15, 0.36, 1);
+
+  --maxw: 1200px;
+  --pad: 40px;
+  --nav-h: 62px;
+}
+
+/* Expose tokens to Tailwind utilities (`bg-bg`, `text-yellow`, `font-display`…) */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-txt: var(--txt);
+  --color-txt-2: var(--txt-2);
+  --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
+  --color-yellow: var(--yellow);
+  --color-yellow-deep: var(--yellow-deep);
+
+  --font-body: var(--f-body);
+  --font-display: var(--f-disp);
+  --font-hand: var(--f-hand);
+  --font-mono: var(--f-mono);
+  --font-latin: var(--f-lat);
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: var(--f-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100svh;
+    background: var(--bg);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background: var(--yellow);
+    color: #0a0a0a;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--yellow);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 900px) {
+    :root {
+      --pad: 20px;
+    }
+  }
+}
+
+@keyframes nav-in {
+  from {
+    transform: translateY(-140px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

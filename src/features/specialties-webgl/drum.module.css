@@ -1,0 +1,388 @@
+/* ============================================================
+   SPECIALTIES — «التخصص» / THE DRUM
+   Three columns on one screen: the section's own text on one
+   side, the active plate's text on the other, the drum between
+   them. Nothing overlaps — the header never sits on the plates.
+   ============================================================ */
+
+.wrap {
+  position: relative;
+  height: 400vh;
+  background: var(--bg);
+  border-block: 1px dashed var(--line-d);
+}
+
+.stage {
+  --p: 0;
+  position: sticky;
+  top: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 20rem) minmax(0, 1fr) minmax(0, 16.5rem);
+  column-gap: clamp(14px, 2.2vw, 34px);
+  align-items: stretch;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  padding: calc(var(--nav-h) + clamp(10px, 2.2vh, 24px)) clamp(20px, 3vw, 56px)
+    clamp(20px, 3.2vh, 34px);
+  background:
+    radial-gradient(52% 44% at 50% 54%, rgba(251, 226, 61, 0.035), transparent 72%),
+    var(--bg);
+}
+
+/* ── the section's own text ──────────────────────────────────── */
+.intro {
+  position: relative;
+  align-self: center;
+  max-width: 21rem;
+  animation: rise 1s var(--ease) both;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+.label::before {
+  content: "";
+  width: 20px;
+  height: 2px;
+  background: var(--yellow);
+}
+
+.title {
+  margin-top: 12px;
+  font-family: var(--f-disp);
+  font-weight: 700;
+  font-size: clamp(21px, 1.75vw, 30px);
+  line-height: 1.24;
+}
+
+.body {
+  margin-top: clamp(12px, 1.6vw, 20px);
+  color: var(--muted);
+  font-size: clamp(12px, 0.92vw, 13.5px);
+  line-height: 1.95;
+  max-width: 34ch;
+}
+
+/* ── the carousel ────────────────────────────────────────────── */
+.carousel {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+
+.carousel::before {
+  content: "";
+  position: absolute;
+  inset: -6% -14%;
+  pointer-events: none;
+  background: radial-gradient(50% 44% at 50% 52%, rgba(255, 255, 255, 0.05), transparent 70%);
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1.1s var(--ease);
+  /* plates leave the frame as light, not as a hard crop */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+}
+
+.canvas[data-ready] {
+  opacity: 1;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(118% 104% at 50% 50%, transparent 58%, rgba(10, 10, 10, 0.68) 100%);
+}
+
+/* ── the active plate's text ─────────────────────────────────── */
+.copy {
+  position: relative;
+  align-self: center;
+  max-width: 17rem;
+  animation: swap 0.8s var(--ease) both;
+}
+
+.index {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  direction: ltr;
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  color: var(--txt);
+}
+
+.index b {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.24);
+  font-size: 9px;
+}
+
+.index::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  margin-inline-end: 10px;
+  background: var(--line);
+  transform: translateY(-3px);
+}
+
+.copy h3 {
+  margin-top: 12px;
+  font-family: var(--f-disp);
+  font-weight: 700;
+  font-size: clamp(19px, 1.55vw, 26px);
+  line-height: 1.22;
+}
+
+.copy p {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: clamp(11.5px, 0.86vw, 13px);
+  line-height: 1.85;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.pill i {
+  width: 5px;
+  height: 5px;
+  background: var(--yellow);
+  transform: rotate(45deg);
+}
+
+.ticks {
+  display: flex;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.ticks i {
+  width: 16px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.18);
+  transition:
+    width 0.6s var(--ease),
+    background-color 0.6s var(--ease);
+}
+
+.ticks i[data-on] {
+  width: 30px;
+  background: var(--yellow);
+}
+
+/* ── scroll progress ─────────────────────────────────────────── */
+.progress {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.progress::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-start: 0;
+  width: calc(var(--p) * 100%);
+  background: var(--yellow);
+  opacity: 0.55;
+}
+
+@keyframes swap {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── static / reduced-motion / no-webgl ──────────────────────── */
+.static {
+  border-block: 1px solid var(--line-d);
+  padding: clamp(48px, 7vw, 96px) 0;
+}
+
+.staticIn {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-inline: var(--pad);
+}
+
+.staticTitle {
+  margin-top: 18px;
+  font-family: var(--f-disp);
+  font-weight: 700;
+  font-size: clamp(27px, 3vw, 44px);
+  line-height: 1.2;
+  max-width: 22ch;
+}
+
+.staticBody {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.9;
+  max-width: 56ch;
+}
+
+.archive {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(10px, 1.2vw, 18px);
+  margin-top: clamp(32px, 4vw, 56px);
+}
+
+.archive figure {
+  margin: 0;
+}
+
+.archivePlate {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #101010;
+}
+
+.archivePlate img {
+  object-fit: cover;
+}
+
+.archive figcaption {
+  padding-top: 13px;
+}
+
+.archiveNum {
+  font-family: var(--f-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.archive h3 {
+  margin-top: 6px;
+  font-family: var(--f-disp);
+  font-weight: 600;
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.3;
+}
+
+.archive p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+
+/* ── narrow: texts above and below, drum between ─────────────── */
+@media (max-width: 1080px) {
+  .stage {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    row-gap: clamp(6px, 1.4vh, 16px);
+    padding-top: calc(var(--nav-h) + clamp(8px, 1.6vh, 16px));
+    padding-bottom: clamp(26px, 4.4vh, 40px);
+  }
+
+  .intro {
+    align-self: start;
+    max-width: none;
+  }
+
+  .title {
+    margin-top: 9px;
+    font-size: clamp(20px, 4.6vw, 28px);
+    line-height: 1.24;
+    max-width: 30ch;
+  }
+
+  .body {
+    margin-top: 8px;
+    font-size: 11.5px;
+    line-height: 1.72;
+    max-width: 48ch;
+  }
+
+  .copy {
+    align-self: end;
+    max-width: none;
+  }
+
+  .copy h3 {
+    margin-top: 8px;
+    font-size: clamp(18px, 4.6vw, 24px);
+  }
+
+  .copy p {
+    margin-top: 6px;
+    font-size: 11.5px;
+    line-height: 1.7;
+    max-width: 52ch;
+  }
+
+  .pill {
+    margin-top: 10px;
+    font-size: 10.5px;
+  }
+
+  .ticks {
+    margin-top: 12px;
+  }
+
+  .canvas {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  }
+
+  .archive {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 400px) {
+  .copy p {
+    font-size: 11px;
+  }
+}
