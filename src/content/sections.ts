@@ -79,6 +79,7 @@ export const ar = {
     prevLabel: 'الورقة السابقة',
     nextLabel: 'الورقة التالية',
     hint: 'اسحب أو استعمل الأسهم',
+    hintSwipe: 'اسحب',
     foot: 'كل ملف بيتفتح كامل — من أول ورقة لآخرها.',
     cases: [
       {
@@ -293,6 +294,7 @@ export const en: SectionsContent = {
     prevLabel: 'Previous sheet',
     nextLabel: 'Next sheet',
     hint: 'Drag or use the arrow keys',
+    hintSwipe: 'Swipe',
     foot: 'Every file opens in full — first sheet to last.',
     cases: [
       {

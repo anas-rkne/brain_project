@@ -316,7 +316,10 @@ export function WorkDossier({ data, locale }: WorkDossierProps) {
               {file.quoteRest}
             </p>
 
-            <span className={styles.hint}>{data.hint}</span>
+            <span className={styles.hint}>
+              <span className={styles.hintKeys}>{data.hint}</span>
+              <span className={styles.hintSwipe}>{data.hintSwipe}</span>
+            </span>
           </div>
         </div>
       )}
